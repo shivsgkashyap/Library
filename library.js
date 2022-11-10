@@ -8,17 +8,27 @@ const formInputs = document.querySelector("form");
 let myLibrary = [];
 
 formInputs.addEventListener("submit", (e) => {
+  e.preventDefault();
   addBookToLibrary();
 });
 
 class Book {
-  constructor(name, author, title, pages, read) {
+  constructor(name, author, title, pages, status) {
     this.name = name;
     this.author = author;
     this.title = title;
     this.pages = pages;
-    this.read = read;
+    this.status = status;
   }
 }
 
-function addBookToLibrary() {}
+function addBookToLibrary() {
+  if (bookName.value.length === 0 || bookAuthor.value.length === 0) {
+    alert("Please, fill all the fields");
+    return;
+  }
+  const newBook = new Book(bookName.value, bookAuthor.value, bookStatus.value);
+
+  myLibrary.push(newBook);
+  console.log(newBook);
+}

@@ -1,0 +1,114 @@
+:root {
+  --white: #fffbfb;
+  --grey: #f0eef1;
+  --black: #050505;
+  --blue: #33c3f0;
+  --red: rgb(228, 26, 103);
+  --border-radius: 8px;
+  --spacing-xs: 5px;
+  --spacing-sm: 10px;
+  --spacing-md: 15px;
+  --spacing-lg: 20px;
+  --spacing-xl: 40px;
+  --container-width: 1200px;
+  --shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+/* CSS RESET */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: var(--grey);
+  color: var(--black);
+  font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  word-wrap: break-word;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: 300;
+}
+h1 {
+  font-size: 2rem;
+  line-height: 0.6;
+  letter-spacing: -0.1rem;
+}
+h2 {
+  font-size: 1.8rem;
+  line-height: 0.65;
+  letter-spacing: -0.1rem;
+}
+h3 {
+  font-size: 1.5rem;
+  line-height: 0.65;
+  letter-spacing: -0.1rem;
+}
+h4 {
+  font-size: 1.2rem;
+  line-height: 0.65;
+  letter-spacing: -0.08rem;
+}
+h5 {
+  font-size: 0.9rem;
+  line-height: 0.75;
+  letter-spacing: -0.05rem;
+}
+
+/* Larger than phablet */
+@media (min-width: 550px) {
+  h1 {
+    font-size: 5rem;
+  }
+  h2 {
+    font-size: 4.2rem;
+  }
+  h3 {
+    font-size: 3.6rem;
+  }
+  h4 {
+    font-size: 3rem;
+  }
+  h5 {
+    font-size: 2.4rem;
+  }
+  h6 {
+    font-size: 1.5rem;
+  }
+}
+
+p {
+  margin-top: 0;
+}
+
+button,
+input {
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
+input[type="text"],
+input[type="number"] {
+  cursor: text;
+}
