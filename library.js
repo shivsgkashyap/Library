@@ -38,7 +38,7 @@ function addBookToLibrary() {
     bookAuthor.value.length === 0 ||
     bookPages.value.length === 0
   ) {
-    alert("Please, fill all the fields");
+    alert("Please fill in all fields");
     return;
   }
   const newBook = new Book(
@@ -49,7 +49,7 @@ function addBookToLibrary() {
   );
 
   myLibrary.push(newBook);
-  console.log(myLibrary);
+  updateLocalStorage();
 }
 
 function clearForm() {
@@ -58,7 +58,19 @@ function clearForm() {
   bookPages.value = "";
 }
 
+function updateLocalStorage() {
+  localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+}
+function checkLocalStorage() {
+  if (localStorage.getItem("myLibrary")) {
+    myLibrary = JSON.parse(localStorage.getItem("myLibrary"));
+  } else {
+    myLibrary = DEFAULT_DATA;
+  }
+}
+
 function render() {
+  checkLocalStorage();
   myLibrary.forEach((book) => {
     const htmlBook = `
       <tr>
