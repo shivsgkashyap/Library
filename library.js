@@ -16,17 +16,20 @@ const entryButton = document.querySelector(".entry-button");
 const formInputs = document.querySelector("form");
 const formGrid = document.querySelector("#book-table-body");
 
-formInputs.addEventListener("submit", (e) => {
-  e.preventDefault();
-  addBookToLibrary();
-  render();
-  clearForm();
-});
+class Book {
+  constructor(name, author, pages, status) {
+    this.name = name;
+    this.author = author;
+    this.pages = pages;
+    this.status = status;
+  }
+}
 
 function render() {
   removeEventListenerToClass(".status-btn", "click", onStatusClick);
   removeEventListenerToClass(".delete", "click", onDeleteClick);
   checkLocalStorage();
+
   formGrid.innerHTML = "";
   myLibrary.forEach((book, i) => {
     const htmlBook = `
@@ -46,14 +49,12 @@ function render() {
 
 render();
 
-class Book {
-  constructor(name, author, pages, status) {
-    this.name = name;
-    this.author = author;
-    this.pages = pages;
-    this.status = status;
-  }
-}
+formInputs.addEventListener("submit", (e) => {
+  e.preventDefault();
+  addBookToLibrary();
+  render();
+  clearForm();
+});
 
 function addBookToLibrary() {
   if (
