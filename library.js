@@ -61,6 +61,7 @@ function clearForm() {
 function updateLocalStorage() {
   localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
 }
+
 function checkLocalStorage() {
   if (localStorage.getItem("myLibrary")) {
     myLibrary = JSON.parse(localStorage.getItem("myLibrary"));
@@ -71,6 +72,7 @@ function checkLocalStorage() {
 
 function render() {
   checkLocalStorage();
+  formGrid.innerHTML = "";
   myLibrary.forEach((book) => {
     const htmlBook = `
       <tr>
@@ -83,3 +85,5 @@ function render() {
     formGrid.insertAdjacentHTML("afterbegin", htmlBook);
   });
 }
+
+render();
