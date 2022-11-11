@@ -23,6 +23,29 @@ formInputs.addEventListener("submit", (e) => {
   clearForm();
 });
 
+function render() {
+  removeEventListenerToClass(".status-btn", "click", onStatusClick);
+  removeEventListenerToClass(".delete", "click", onDeleteClick);
+  checkLocalStorage();
+  formGrid.innerHTML = "";
+  myLibrary.forEach((book, i) => {
+    const htmlBook = `
+      <tr class="book-item" data-counter="${i}">
+        <td>${book.name}</td>
+        <td>${book.author}</td>
+        <td><button class="status-btn">${book.status}</button></td>
+        <td><button class="delete">delete</button></td>
+      </tr>
+      `;
+    formGrid.insertAdjacentHTML("afterbegin", htmlBook);
+
+    addEventListenerToClass(".status-btn", "click", onStatusClick);
+    addEventListenerToClass(".delete", "click", onDeleteClick);
+  });
+}
+
+render();
+
 class Book {
   constructor(name, author, pages, status) {
     this.name = name;
@@ -69,29 +92,6 @@ function checkLocalStorage() {
     myLibrary = DEFAULT_DATA;
   }
 }
-
-function render() {
-  removeEventListenerToClass(".status-btn", "click", onStatusClick);
-  removeEventListenerToClass(".delete", "click", onDeleteClick);
-  checkLocalStorage();
-  formGrid.innerHTML = "";
-  myLibrary.forEach((book, i) => {
-    const htmlBook = `
-      <tr class="book-item" data-counter="${i}">
-        <td>${book.name}</td>
-        <td>${book.author}</td>
-        <td><button class="status-btn">${book.status}</button></td>
-        <td><button class="delete">delete</button></td>
-      </tr>
-      `;
-    formGrid.insertAdjacentHTML("afterbegin", htmlBook);
-
-    addEventListenerToClass(".status-btn", "click", onStatusClick);
-    addEventListenerToClass(".delete", "click", onDeleteClick);
-  });
-}
-
-render();
 
 function addEventListenerToClass(cls, event, fn) {
   const elements = document.querySelectorAll(cls);
