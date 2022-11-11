@@ -71,19 +71,60 @@ function checkLocalStorage() {
 }
 
 function render() {
-  checkLocalStorage();
+  removeEventListenerToClass(".status-btn", "click", onStatusClick);
+  removeEventListenerToClass(".delete", "click", onDeleteClick);
+
   formGrid.innerHTML = "";
-  myLibrary.forEach((book) => {
+  myLibrary.forEach((book, i) => {
     const htmlBook = `
-      <tr>
+      <tr class="book-item" data-counter="${i}">
         <td>${book.name}</td>
         <td>${book.author}</td>
-        <td><button class="status-button">${book.status}</button></td>
+        <td><button class="status-btn">${book.status}</button></td>
         <td><button class="delete">delete</button></td>
       </tr>
       `;
     formGrid.insertAdjacentHTML("afterbegin", htmlBook);
+
+    addEventListenerToClass(".status-btn", "click", onStatusClick);
+    addEventListenerToClass(".delete", "click", onDeleteClick);
   });
 }
 
 render();
+
+function addEventListenerToClass(cls, event, fn) {
+  const elements = document.querySelectorAll(cls);
+
+  for (var counter = 0; counter < elements.length; counter++) {
+    elements[counter].addEventListener(event, fn);
+  }
+}
+
+function removeEventListenerToClass(cls, event, fn) {
+  const elements = document.querySelectorAll(cls);
+
+  for (var counter = 0; counter < elements.length; counter++) {
+    elements[counter].removeEventListener(event, fn);
+  }
+}
+
+function onDeleteClick(eventData) {
+  var bookElement = eventData.target;
+  var bookItem = bookElement.closest(".book-item");
+  var counter = bookItem.dataset.counter;
+  myLibrary.splice(counter, 1);
+  console.log(myLibrary);
+  render();
+}
+
+function onStatusClick(eventData) {
+  const bookElement = eventData.target;
+  const bookItem = bookElement.closest(".book-item");
+  const counter = bookItem.dataset.counter;
+  const selectedBook = myLibrary[counter];
+  if (selectedBook.status === "read") {
+    selectedBook.status = "not read";
+  } else selectedBook.status = "read";
+  render();
+}
