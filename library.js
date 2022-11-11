@@ -116,7 +116,6 @@ function onDeleteClick(eventData) {
   if (confirm(`are you sure you want to delete ${myLibrary[counter].name}`)) {
     myLibrary.splice(counter, 1);
   }
-  console.log(myLibrary);
   updateLocalStorage();
   render();
 }
