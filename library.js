@@ -63,17 +63,17 @@ function updateLocalStorage() {
 }
 
 function checkLocalStorage() {
-  if (localStorage.getItem("myLibrary")) {
-    myLibrary = JSON.parse(localStorage.getItem("myLibrary"));
-  } else {
-    myLibrary = DEFAULT_DATA;
-  }
+  // if (localStorage.getItem("myLibrary")) {
+  //   myLibrary = JSON.parse(localStorage.getItem("myLibrary"));
+  // } else {
+  myLibrary = DEFAULT_DATA;
+  // }
 }
 
 function render() {
   removeEventListenerToClass(".status-btn", "click", onStatusClick);
   removeEventListenerToClass(".delete", "click", onDeleteClick);
-
+  checkLocalStorage();
   formGrid.innerHTML = "";
   myLibrary.forEach((book, i) => {
     const htmlBook = `
@@ -115,6 +115,7 @@ function onDeleteClick(eventData) {
   var counter = bookItem.dataset.counter;
   myLibrary.splice(counter, 1);
   console.log(myLibrary);
+  updateLocalStorage();
   render();
 }
 
@@ -126,5 +127,6 @@ function onStatusClick(eventData) {
   if (selectedBook.status === "read") {
     selectedBook.status = "not read";
   } else selectedBook.status = "read";
+  updateLocalStorage();
   render();
 }
