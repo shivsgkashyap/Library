@@ -63,11 +63,11 @@ function updateLocalStorage() {
 }
 
 function checkLocalStorage() {
-  // if (localStorage.getItem("myLibrary")) {
-  //   myLibrary = JSON.parse(localStorage.getItem("myLibrary"));
-  // } else {
-  myLibrary = DEFAULT_DATA;
-  // }
+  if (localStorage.getItem("myLibrary")) {
+    myLibrary = JSON.parse(localStorage.getItem("myLibrary"));
+  } else {
+    myLibrary = DEFAULT_DATA;
+  }
 }
 
 function render() {
@@ -113,7 +113,9 @@ function onDeleteClick(eventData) {
   var bookElement = eventData.target;
   var bookItem = bookElement.closest(".book-item");
   var counter = bookItem.dataset.counter;
-  myLibrary.splice(counter, 1);
+  if (confirm(`are you sure you want to delete ${myLibrary[counter].name}`)) {
+    myLibrary.splice(counter, 1);
+  }
   console.log(myLibrary);
   updateLocalStorage();
   render();
