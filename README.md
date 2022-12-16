@@ -1,4 +1,4 @@
-# Library App [Live Demo](https://shivsgkashyap.github.io/library-app/)
+# Library App - [Live Demo](https://shivsgkashyap.github.io/library-app/)
 
 A library app following I made to practice the following:
 
