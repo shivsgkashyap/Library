@@ -22,7 +22,8 @@
 
     <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="css/library.css" />
+    <link rel="stylesheet" href="library.css" />
+    <link rel="stylesheet" href="normalize.css" />
 
     <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -80,9 +81,15 @@
       </div>
     </div>
     <footer class="footer">
-      <p>Copyright © {new Date().getFullYear()} Shiv Kashyap</p>
+      <p>
+        Copyright ©
+        <script>
+          document.write(new Date().getFullYear());
+        </script>
+        Shiv Kashyap
+      </p>
       <a href="https://github.com/shivsgkashyap" target="_blank">
-        <img src="{github}" alt="Github Logo" />
+        <img src="./images/github.png" alt="Github Logo" />
       </a>
     </footer>
 
