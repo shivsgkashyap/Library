@@ -1,4 +1,4 @@
-let myLibrary = [];
+let library;
 const DEFAULT_DATA = [
   { name: "The Lord of the Rings", author: "Tolkien", status: "read" },
   {
@@ -8,127 +8,96 @@ const DEFAULT_DATA = [
   },
   { name: "Naruto", author: "Masashi Kishimoto", status: "read" },
 ];
-const bookName = document.querySelector("#name");
-const bookAuthor = document.querySelector("#author");
-const bookStatus = document.querySelector("#status");
-const bookPages = document.querySelector("#pages");
-const entryButton = document.querySelector(".entry-button");
-const formInputs = document.querySelector("form");
-const formGrid = document.querySelector("#book-table-body");
-
-class Book {
-  constructor(name, author, pages, status) {
-    this.name = name;
-    this.author = author;
-    this.pages = pages;
-    this.status = status;
-  }
-}
-
-function render() {
-  removeEventListenerToClass(".status-btn", "click", onStatusClick);
-  removeEventListenerToClass(".delete", "click", onDeleteClick);
-  checkLocalStorage();
-
-  formGrid.innerHTML = "";
-  myLibrary.forEach((book, i) => {
-    const htmlBook = `
-      <tr class="book-item" data-counter="${i}">
-        <td>${book.name}</td>
-        <td>${book.author}</td>
-        <td><button class="status-btn">${book.status}</button></td>
-        <td><button class="delete">delete</button></td>
-      </tr>
-      `;
-    formGrid.insertAdjacentHTML("afterbegin", htmlBook);
-
-    addEventListenerToClass(".status-btn", "click", onStatusClick);
-    addEventListenerToClass(".delete", "click", onDeleteClick);
-  });
-}
-
-render();
-
-formInputs.addEventListener("submit", (e) => {
+const $name = document.querySelector("#name");
+const $author = document.querySelector("#author");
+const $status = document.querySelector("#status");
+const $tableBody = document.querySelector("#book-table-body");
+const $form = document.querySelector("form").addEventListener("submit", (e) => {
   e.preventDefault();
   addBookToLibrary();
   render();
   clearForm();
 });
+const $table = document
+  .querySelector("table")
+  .addEventListener("click", (e) => {
+    const currentTarget = e.target.parentNode.parentNode.childNodes[1];
+    if (e.target.innerHTML == "delete") {
+      if (confirm(`are you sure you want to delete ${currentTarget.innerText}`))
+        deleteBook(findBook(library, currentTarget.innerText));
+    }
+    if (e.target.classList.contains("status-button")) {
+      changeStatus(findBook(library, currentTarget.innerText));
+    }
+    updateLocalStorage();
+    render();
+  });
+
+class Book {
+  constructor(name, author, status) {
+    this.name = name;
+    this.author = author;
+    this.status = status;
+  }
+}
 
 function addBookToLibrary() {
-  if (
-    bookName.value.length === 0 ||
-    bookAuthor.value.length === 0 ||
-    bookPages.value.length === 0
-  ) {
-    alert("Please fill in all fields");
+  if ($name.value.length === 0 || $author.value.length === 0) {
+    alert("Please, fill all the fields");
     return;
   }
-  const newBook = new Book(
-    bookName.value,
-    bookAuthor.value,
-    bookPages.value,
-    bookStatus.value
-  );
+  const newBook = new Book($name.value, $author.value, $status.value);
 
-  myLibrary.push(newBook);
+  library.push(newBook);
   updateLocalStorage();
 }
-
+function changeStatus(book) {
+  if (library[book].status === "read") {
+    library[book].status = "not read";
+  } else library[book].status = "read";
+}
+function deleteBook(currentBook) {
+  library.splice(currentBook, currentBook + 1);
+}
+function findBook(libraryArray, name) {
+  if (libraryArray.length === 0 || libraryArray === null) {
+    return;
+  }
+  for (book of libraryArray)
+    if (book.name === name) {
+      return libraryArray.indexOf(book);
+    }
+}
 function clearForm() {
-  bookName.value = "";
-  bookAuthor.value = "";
-  bookPages.value = "";
+  $name.value = "";
+  $author.value = "";
 }
-
 function updateLocalStorage() {
-  localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+  localStorage.setItem("library", JSON.stringify(library));
+  //library = JSON.parse(localStorage.getItem("library"));
 }
-
 function checkLocalStorage() {
-  if (localStorage.getItem("myLibrary")) {
-    myLibrary = JSON.parse(localStorage.getItem("myLibrary"));
+  if (localStorage.getItem("library")) {
+    library = JSON.parse(localStorage.getItem("library"));
   } else {
-    myLibrary = DEFAULT_DATA;
+    library = DEFAULT_DATA;
   }
 }
 
-function addEventListenerToClass(cls, event, fn) {
-  const elements = document.querySelectorAll(cls);
-
-  for (var counter = 0; counter < elements.length; counter++) {
-    elements[counter].addEventListener(event, fn);
-  }
+function render() {
+  checkLocalStorage();
+  $tableBody.innerHTML = "";
+  library.forEach((book) => {
+    const htmlBook = `
+      <tr>
+        <td>${book.name}</td>
+        <td>${book.author}</td>
+        <td><button class="status-button">${book.status}</button></td>
+        <td><button class="delete">delete</button></td>
+      </tr>
+      `;
+    $tableBody.insertAdjacentHTML("afterbegin", htmlBook);
+  });
 }
 
-function removeEventListenerToClass(cls, event, fn) {
-  const elements = document.querySelectorAll(cls);
-
-  for (var counter = 0; counter < elements.length; counter++) {
-    elements[counter].removeEventListener(event, fn);
-  }
-}
-
-function onDeleteClick(eventData) {
-  var bookElement = eventData.target;
-  var bookItem = bookElement.closest(".book-item");
-  var counter = bookItem.dataset.counter;
-  if (confirm(`are you sure you want to delete ${myLibrary[counter].name}`)) {
-    myLibrary.splice(counter, 1);
-  }
-  updateLocalStorage();
-  render();
-}
-
-function onStatusClick(eventData) {
-  const bookElement = eventData.target;
-  const bookItem = bookElement.closest(".book-item");
-  const counter = bookItem.dataset.counter;
-  const selectedBook = myLibrary[counter];
-  if (selectedBook.status === "read") {
-    selectedBook.status = "not read";
-  } else selectedBook.status = "read";
-  updateLocalStorage();
-  render();
-}
+render();
